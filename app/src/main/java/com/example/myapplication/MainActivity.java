@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton radioButton_c;
     Button buttonDalej;
     int aktualnePytanie = 0;
+    int sumaPunktow = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,19 +76,21 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (sprawdzOdpowiedz(aktualnePytanie)) {
+                            sumaPunktow++;
+                            Toast.makeText(MainActivity.this, "dobrze", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "źle", Toast.LENGTH_SHORT).show();
+                        }
                         if (aktualnePytanie < pytania.size() - 1) {
-                            if (sprawdzOdpowiedz(aktualnePytanie)) {
-                                Toast.makeText(MainActivity.this, "dobrze", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(MainActivity.this, "źle", Toast.LENGTH_SHORT).show();
-                            }
                             aktualnePytanie++;
                             wyswietlPytanie(aktualnePytanie);
                         } else {
+
                             //TODO:koniec testu
                             //podliczenie punktow znika wszystko wysyłamy wynik sms
                             radioGroup.setVisibility(View.INVISIBLE);
-                            textViewPytanie.setText("Koniec testu, punkty:");
+                            textViewPytanie.setText("Koniec testu, punkty:"+sumaPunktow);
                             buttonDalej.setVisibility(View.INVISIBLE);
                         }
                     }
