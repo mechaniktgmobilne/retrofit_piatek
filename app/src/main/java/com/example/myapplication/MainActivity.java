@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton radioButton_a;
     RadioButton radioButton_b;
     RadioButton radioButton_c;
-    Button buttonDalej;
+    Button buttonDalej,buttonPodziel;
     int aktualnePytanie = 0;
     int sumaPunktow = 0;
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         radioButton_b = findViewById(R.id.radioButton2);
         radioButton_c = findViewById(R.id.radioButton3);
         buttonDalej = findViewById(R.id.button);
+        buttonPodziel = findViewById(R.id.buttonPodziel);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://my-json-server.typicode.com/mechaniktgmobilne/retrofit_pytania/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -92,7 +94,21 @@ public class MainActivity extends AppCompatActivity {
                             radioGroup.setVisibility(View.INVISIBLE);
                             textViewPytanie.setText("Koniec testu, punkty:"+sumaPunktow);
                             buttonDalej.setVisibility(View.INVISIBLE);
+                            buttonPodziel.setVisibility(View.VISIBLE);
                         }
+                    }
+                }
+        );
+        buttonPodziel.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intentWyslij = new Intent();
+                        intentWyslij.setAction(Intent.ACTION_SEND);
+                        intentWyslij.putExtra(Intent.EXTRA_TEXT,"otrzymano: "+sumaPunktow);
+                        intentWyslij.setType("text/plain");
+                        Intent intentUdostepniona = Intent.createChooser(intentWyslij,null);
+                        startActivity(intentUdostepniona);
                     }
                 }
         );
